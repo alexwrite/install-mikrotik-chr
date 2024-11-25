@@ -1,6 +1,11 @@
 #!/bin/bash
 export PATH=$PATH:/usr/bin:/bin
 
+# Définir une fonction pour afficher des messages de statut
+function status_message() {
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] $1"
+}
+
 # Vérification de la compatibilité système
 status_message "Vérification de la compatibilité système (virtualisation)"
 virt_type=$(systemd-detect-virt)
@@ -11,11 +16,6 @@ if [[ "$virt_type" != "none" && "$virt_type" != "kvm" ]]; then
 fi
 
 status_message "Environnement compatible détecté : $virt_type."
-
-# Définir une fonction pour afficher des messages de statut
-function status_message() {
-    echo "[$(date +'%Y-%m-%d %H:%M:%S')] $1"
-}
 
 # Fonction pour vérifier les verrouillages APT avec une boucle d'attente
 function check_apt_lock() {
