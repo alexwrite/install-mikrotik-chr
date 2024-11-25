@@ -1,14 +1,16 @@
 #!/bin/bash
 export PATH=$PATH:/usr/bin:/bin
 
-# Vérification du type de virtualisation
+# Vérification de la compatibilité système
+status_message "Vérification de la compatibilité système (virtualisation)"
 virt_type=$(systemd-detect-virt)
 
-if [[ "$virt_type" != "kvm" && "$virt_type" != "none" ]]; then
-    echo "Ce script ne peut être exécuté que sur des VPS KVM ou des machines physiques."
-    echo "Type de virtualisation détecté : $virt_type"
+if [[ "$virt_type" != "none" && "$virt_type" != "kvm" ]]; then
+    status_message "Erreur : environnement non compatible détecté : $virt_type"
     exit 1
 fi
+
+status_message "Environnement compatible détecté : $virt_type."
 
 # Définir une fonction pour afficher des messages de statut
 function status_message() {
