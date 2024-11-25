@@ -1,6 +1,15 @@
 #!/bin/bash
 export PATH=$PATH:/usr/bin:/bin
 
+# Vérification du type de virtualisation
+virt_type=$(systemd-detect-virt)
+
+if [[ "$virt_type" != "kvm" && "$virt_type" != "none" ]]; then
+    echo "Ce script ne peut être exécuté que sur des VPS KVM ou des machines physiques."
+    echo "Type de virtualisation détecté : $virt_type"
+    exit 1
+fi
+
 # Définir une fonction pour afficher des messages de statut
 function status_message() {
     echo "[$(date +'%Y-%m-%d %H:%M:%S')] $1"
